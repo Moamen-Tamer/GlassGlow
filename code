@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GlassGlow – The Unmissable Navbar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(120deg, #23243a 0%, #2b3648 100%);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .glass-navbar {
+      font-family: 'Montserrat', Arial, sans-serif;
+      backdrop-filter: blur(10px);
+      background: rgba(34, 40, 49, 0.82);
+      border-bottom: 1.5px solid rgba(0, 255, 212, 0.15);
+      box-shadow: 0 8px 32px 0 rgba(12, 28, 50, 0.32);
+      color: #fff;
+      padding: 0 2.2rem;
+      position: relative;
+      display: flex;
+      align-items: center;
+      height: 76px;
+      z-index: 10;
+      transition: background 0.5s;
+    }
+    .nav-logo {
+      font-weight: 700;
+      font-size: 1.9rem;
+      letter-spacing: 2px;
+      background: linear-gradient(90deg, #1dafff 25%, #28ffe6 60%, #f1ff61 100%);
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      filter: drop-shadow(0 0 8px #18ffe6c0);
+      user-select: none;
+      margin-right: auto;
+      cursor: pointer;
+    }
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 2.2rem;
+      margin: 0;
+      align-items: center;
+      transition: max-height 0.5s, padding 0.3s;
+    }
+    .nav-links li { position: relative; }
+    .nav-links li a {
+      text-decoration: none;
+      position: relative;
+      display: inline-block;
+      padding: 0.7em 1.1em;
+      color: #333;
+      font-weight: bold;
+      font-size: 1.07rem;
+      border-radius: 0.5rem;
+      letter-spacing: 1.2px;
+      background: linear-gradient(90deg, #23a7ff 0%, #21ffe9 100%);
+      background-size: 200%;
+      background-position: 100% 0;
+      transition:
+        color 0.25s,
+        background-position 0.3s,
+        transform 0.3s;
+      user-select: none;
+      z-index: 0;
+      overflow: visible;
+    }
+    .nav-links li a::before {
+      content: '';
+      position: absolute;
+      top: -1px; left: -1px; right: -1px; bottom: -1px;
+      border-radius: 0.75rem;
+      border: 3px solid transparent;
+      pointer-events: none;
+      box-shadow: 0 0 6px #23a7ff88, 0 0 15px #21ffe988, 0 0 30px #5fffd0aa;
+      opacity: 0;
+      transition: opacity 0.45s, box-shadow 0.45s;
+      z-index: -1;
+    }
+    .nav-links li a:hover,
+    .nav-links li a:focus {
+      font-weight: bolder;
+      color: #000;
+      background-position: 0 0;
+      box-shadow: 0 4px 20px 0 #1de8ff80;
+      transform: scale(1.05);
+      outline: none;
+      z-index: 1;
+    }
+    .nav-links li a:hover::before,
+    .nav-links li a:focus::before {
+      opacity: 1;
+      border-color: #5fffd0;
+      box-shadow: 0 0 12px #23a7ffcc, 0 0 30px #21ffe9cc, 0 0 45px #5fffd0ff;
+    }
+    .nav-toggle { display: none; }
+    .nav-toggle-label {
+      display: none;
+      width: 48px; height: 48px;
+      justify-content: center; align-items: center;
+      cursor: pointer;
+      position: relative; z-index: 35; margin-left: auto;
+    }
+    .nav-toggle-label span,
+    .nav-toggle-label span::before,
+    .nav-toggle-label span::after {
+      content: '';
+      position: absolute;
+      height: 4.5px; width: 34px;
+      border-radius: 2.5px;
+      background: #60fff4;
+      transition: transform 0.38s, background 0.22s;
+    }
+    .nav-toggle-label span { position: relative; }
+    .nav-toggle-label span::before { transform: translateY(-11px); }
+    .nav-toggle-label span::after  { transform: translateY(11px); }
+    .nav-toggle:checked + .nav-toggle-label span,
+    .nav-toggle-label.open span {
+      transform: rotate(180deg); background: transparent;
+    }
+    .nav-toggle:checked + .nav-toggle-label span::before,
+    .nav-toggle-label.open span::before {
+      transform: rotate(45deg); background: #f1ff61;
+    }
+    .nav-toggle:checked + .nav-toggle-label span::after,
+    .nav-toggle-label.open span::after {
+      transform: rotate(-45deg); background: #13e1ff;
+    }
+
+    @media (max-width: 880px) {
+      .nav-links {
+        position: absolute;
+        top: 76px; left: 0; width: 100vw;
+        background: rgba(26, 33, 48, 0.96);
+        flex-direction: column;
+        gap: 1.22rem;
+        max-height: 0;
+        overflow: hidden;
+        box-shadow: 0 12px 38px #00ffe778;
+        padding: 0;
+      }
+      /* Menu opens when checked OR label has .open */
+      .nav-toggle:checked + .nav-toggle-label + .nav-links,
+      .nav-toggle-label.open + .nav-links {
+        max-height: 370px;
+        padding: 1.8rem 0;
+      }
+      .nav-toggle-label {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="glass-navbar">
+    <div class="nav-logo">GlassGlow</div>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" />
+    <label for="nav-toggle" class="nav-toggle-label" id="hamburger">
+      <span></span>
+    </label>
+    <ul class="nav-links" id="navLinks" role="menu">
+      <li role="none"><a href="#" role="menuitem" tabindex="0">Home</a></li>
+      <li role="none"><a href="#" role="menuitem" tabindex="0">Features</a></li>
+      <li role="none"><a href="#" role="menuitem" tabindex="0">Pricing</a></li>
+      <li role="none"><a href="#" role="menuitem" tabindex="0">About</a></li>
+      <li role="none"><a href="#" role="menuitem" tabindex="0">Contact</a></li>
+    </ul>
+  </nav>
+  <script>
+    // Only activate hover-open on mobile widths
+    const navToggle = document.getElementById('nav-toggle');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    
+    let hoverOpen = false;
+    function isMobile() {
+      return window.innerWidth < 881;
+    }
+    // Open on hover over hamburger or menu
+    function openMenu() {
+      if (isMobile()) {
+        hoverOpen = true;
+        hamburger.classList.add('open');
+      }
+    }
+    // Close when mouse leaves both hamburger and menu
+    function closeMenu() {
+      if (isMobile()) {
+        hoverOpen = false;
+        hamburger.classList.remove('open');
+      }
+    }
+    // Checkbox always synced to manual user clicks
+    hamburger.addEventListener('mouseenter', openMenu);
+    hamburger.addEventListener('mouseleave', () => {
+      setTimeout(() => { // delay to allow navLinks hover to be registered
+        if (!navLinks.matches(':hover')) closeMenu();
+      }, 30);
+    });
+    navLinks.addEventListener('mouseenter', openMenu);
+    navLinks.addEventListener('mouseleave', closeMenu);
+
+    // Also close menu on resize to desktop width
+    window.addEventListener('resize', () => {
+      if (!isMobile()) closeMenu();
+    });
+  </script>
+</body>
+</html>
